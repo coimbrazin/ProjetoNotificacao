@@ -82,11 +82,13 @@ async function schedulePushNotification() {
     content: {
       title: "Boleto Gerado 📬",
       body: "Um boleto foi gerado no no valor de R$ 1000,00!",
+      sound: "somdenotificacao.wav",
       data: { data: "goes here", test: { test1: "more data" } },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds: 2,
+      channelId: "somdenotificacao",
     },
   });
 }
@@ -95,11 +97,12 @@ async function registerForPushNotificationsAsync() {
   let token;
 
   if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("myNotificationChannel", {
-      name: "A channel is needed for the permissions prompt to appear",
+    await Notifications.setNotificationChannelAsync("somdenotificacao", {
+      name: "Notificações",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#FF231F7C",
+      sound: "somdenotificacao.wav",
     });
   }
 
@@ -130,7 +133,7 @@ async function registerForPushNotificationsAsync() {
     ).data;
     console.log(token);
   } catch (e) {
-    token = `${e}`;
+    token = String(e);
   }
 
   return token;
